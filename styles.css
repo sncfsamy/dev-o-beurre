@@ -255,8 +255,8 @@ nav ul {
 }
 
 nav ul li {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     color: var(--sixth-color);
     font-weight: bold;
     cursor: pointer;
