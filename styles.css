@@ -1,0 +1,536 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    transition: .5s linear;
+    -webkit-transition: .5s linear;
+    -moz-transition: .5s linear;
+    -ms-transition: .5s linear;
+    -o-transition: .5s linear;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    perspective: 1000px;
+    min-height: 100vh;
+    max-width: 900px;
+    overflow-x: hidden;
+    --light-mode-text: rgba(0, 0, 0, 0.697);
+    --light-mode-background: #d1d0d0;
+    --dark-mode-text: rgba(255, 255, 255, 0.768);
+    --dark-mode-background: #1e1e1e;
+    --active-text-color: var(--light-mode-text);
+    --active-background-color: var(--light-mode-background);
+    --primary-color: rgba(255, 0, 0, 1);
+    --secondary-color: rgba(170, 0, 0, 1);
+    --third-color: rgba(0, 0, 0, 0.697);
+    --fourth-color: rgba(188, 4, 4, 0.5);
+    --sixth-color: rgba(255, 255, 255, 0.768);
+    --font-size-title: 20px;
+    --font-size-title: calc((45vw - 4.5rem) / 6);
+    color: var(--active-text-color);
+    background-color: var(--active-background-color);
+    transition: .5s linear;
+    -webkit-transition: .5s linear;
+    -moz-transition: .5s linear;
+    -ms-transition: .5s linear;
+    -o-transition: .5s linear;
+    display: flex;
+    flex-direction: column;
+}
+
+@font-face {
+    font-family: "Onderneming";
+    src: url("assets/Onderneming.ttf") format("truetype"),
+        url("assets/Onderneming.woff2") format("woff2");
+}
+
+header {
+    margin: 20px 20px 0 0;
+    text-align:center;
+    height: auto;
+    line-height: 110%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    justify-content: space-between;
+    order: 1;
+    flex-grow: 0;
+}
+
+header > div:first-child {
+    margin-left: 3vw;
+    text-align: center;
+    width: 7vw;
+    cursor: pointer;
+}
+
+.brightness {
+    fill: var(--dark-mode-text);
+}
+
+.moon {
+    fill: var(--light-mode-text);
+}
+
+.hide {
+    display:none;
+}
+
+.brightness, .moon {
+    transition: 1s linear;
+    -webkit-transition: 1s linear;
+    -moz-transition: 1s linear;
+    -ms-transition: 1s linear;
+    -o-transition: 1s linear;
+}
+
+.title {
+    font-family: "Onderneming";
+    display: inline;
+    vertical-align: middle;
+    margin: 0;
+    font-size: var(--font-size-title);
+    color:rgba(188, 4, 4, 0.5);
+    background: linear-gradient(rgb(247, 0, 0), rgb(255, 0, 0));
+    background-clip: text;
+    -webkit-background-clip: text;
+    -ms-background-clip: text;
+    color: transparent;
+    text-shadow: calc(var(--font-size-title)/8) calc(var(--font-size-title)/8) calc(var(--font-size-title)/8) rgba(0, 0, 0, 0.5);
+    line-height: 120%;
+}
+
+/* Animation of < > of title */
+/* inspiré de: https://stackoverflow.com/questions/30872773/css-only-3d-spinning-text */
+.spinner-left {
+    margin-left: 0;
+    animation-name: spin-left, deph;
+    -webkit-animation-name: spin-left, deph;
+    -moz-animation-name: spin-left, deph;
+    -ms-animation-name: spin-left, deph;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -ms-background-clip: text;
+    margin-right: 10px;
+}
+.spinner-right {
+    animation-name: spin-right, deph;
+    -webkit-animation-name: spin-right, deph;
+    -moz-animation-name: spin-right, deph;
+    -ms-animation-name: spin-right, deph;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -ms-background-clip: text;
+    margin-left: 10px;
+}
+.spinner {
+    line-height: normal;
+    display: inline-block;
+    vertical-align: middle;
+    font-size: calc((80vw - 4.5rem) / 7);
+    font-weight: bolder;
+    text-align: center;
+    transform-style: preserve-3d;
+    animation-duration: 6s;
+    -webkit-animation-duration: 6s;
+    -moz-animation-duration: 6s;
+    -ms-animation-duration: 6s;
+    animation-iteration-count: infinite;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-timing-function: ease-in-out;
+    -ms-animation-timing-function: ease-in-out;
+}
+@-ms-keyframes spin-left {
+    0% { -ms-transform: rotateY(0deg); }
+    50% { -ms-transform: rotateY(0deg); }
+    100% { -ms-transform: rotateY(-360deg); }
+}
+@-moz-keyframes spin-left {
+    0% { -moz-transform: rotateY(0deg); }
+    50% { -moz-transform: rotateY(0deg); }
+    100% { -moz-transform: rotateY(-360deg); }
+}
+@-webkit-keyframes spin-left {
+    0% { -webkit-transform: rotateY(0deg); }
+    50% { -webkit-transform: rotateY(0deg); }
+    100% { -webkit-transform: rotateY(-360deg); }
+}
+@keyframes spin-left {
+    0% { 
+        -webkit-transform: rotateY(0deg);
+        transform:rotateY(0deg);
+    }
+    50% { 
+        -webkit-transform: rotateY(0deg);
+        transform:rotateY(0deg);
+    }
+    100% {
+        -webkit-transform: rotateY(-360deg);
+        transform:rotateY(-360deg);
+    }
+}
+@-ms-keyframes spin-right {
+    0% { -ms-transform: rotateY(0deg); }
+    50% { -ms-transform: rotateY(0deg); }
+    100% { -ms-transform: rotateY(360deg); }
+}
+@-moz-keyframes spin-right {
+    0% { -moz-transform: rotateY(0deg); }
+    50% { -moz-transform: rotateY(0deg); }
+    100% { -moz-transform: rotateY(360deg); }
+}
+@-webkit-keyframes spin-right {
+    0% { -webkit-transform: rotateY(0deg); }
+    50% { -webkit-transform: rotateY(0deg); }
+    100% { -webkit-transform: rotateY(360deg); }
+}
+@keyframes spin-right {
+    0% { 
+        -webkit-transform: rotateY(0deg);
+        transform:rotateY(0deg);
+    }
+    50% { 
+        -webkit-transform: rotateY(0deg);
+        transform:rotateY(0deg);
+    }
+    100% {
+        -webkit-transform: rotateY(360deg);
+        transform:rotateY(360deg);
+    }
+}
+@keyframes deph {
+    0% { text-shadow: 0 0 var(--active-text-color); }
+    50% { text-shadow: 0 0 var(--active-text-color); }
+    62.5% { text-shadow: 1px 0 var(--active-text-color), 2px 0 var(--active-text-color), 3px 0 var(--active-text-color), 4px 0 var(--active-text-color), 5px 0 var(--active-text-color), 6px 0 var(--active-text-color); }
+    75% { text-shadow: 0 0 var(--active-text-color); }
+    87.5% { text-shadow: -1px 0 var(--active-text-color), -2px 0 var(--active-text-color), -3px 0 var(--active-text-color), -4px 0 var(--active-text-color), -5px 0 var(--active-text-color), -6px 0 var(--active-text-color); }
+    100% { text-shadow: 0 0 var(--active-text-color); }
+}
+
+/* fin animation */
+
+/* CSS burger menu buton */
+/* inspiré de : https://www.w3schools.com/howto/howto_css_menu_icon.asp */
+.burger-button {
+    display: inline-block;
+    cursor: pointer;
+    vertical-align: middle;
+    --bar1-change-translation: calc((80vw - 4.5rem) / 29);
+    --bar3-change-translation: calc((-80vw - 4.5rem) / 29);
+}
+
+.burger-button-bar1, .burger-button-bar2, .burger-button-bar3 {
+    width: calc((80vw - 4.5rem) / 7);
+    height: calc((80vw - 4.5rem) / 42);
+    background-color: var(--active-text-color);
+    margin: 1vw 0;
+    transition: 0.4s;
+}
+
+.burger-button-change .burger-button-bar1 {
+    transform: translate(0, var(--bar1-change-translation)) rotate(-45deg);
+    background-color: var(--secondary-color);
+}
+
+.burger-button-change .burger-button-bar2 {
+    opacity: 0;
+}
+
+.burger-button-change .burger-button-bar3 {
+    transform: translate(0, var(--bar3-change-translation)) rotate(45deg);
+    background-color: var(--secondary-color);
+}
+/* fin burger menu bouton */
+
+nav {
+    position: fixed;
+    right: -5px;
+    top: 10vh;
+    overflow:hidden;
+    -webkit-transition: width 1s ease-in-out;
+    -moz-transition: width 1s ease-in-out;
+    -o-transition: width 1s ease-in-out;
+    transition: width 1s ease-in-out;
+    width: 0px;
+    height: 89vh;
+    text-shadow: 0 0 2px #000, 0 0 4px #000, 0 0 6px #000;
+    border: 0px solid var(--active-text-color);
+    background-color: var(--fourth-color);
+    z-index: 2;
+}
+
+nav ul {
+    padding-left: 20px;
+    list-style-type: none;
+    width: 130px;
+}
+
+nav ul li {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: var(--sixth-color);
+    font-weight: bold;
+    cursor: pointer;
+    text-align: left;
+}
+
+nav ul li:hover {
+    color: var(--secondary-color);
+}
+
+main {
+    order: 2;
+    flex-grow: 1;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    align-items: stretch;
+    height: 100%;
+}
+
+main > div {
+    grid-column: 1 / 3;
+    grid-row: 1;
+    text-align: center;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+}
+
+main > div img {
+    position: relative;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+main section:not(.school_map) {
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
+}
+
+main section, 
+main form section, 
+main > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100px;
+}
+
+main section:not(.school_map) div {
+    margin: 20px;
+}
+
+main section div, main form section div {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+main div.details {
+    display: initial;
+    grid-column: 1 / 3;
+    grid-row: 2/4;
+}
+
+main div.details p {
+    background-color: var(--fourth-color);
+    padding: 15px;
+    margin: 15px;
+}
+
+main section:nth-child(even) div[class*=" thumb_"] {
+    width: 80%;
+    height: 80%;
+    margin: 15px;
+}
+
+main section:nth-child(even) div img {
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+main section:nth-child(even) div img:hover {
+    opacity: 0.35;
+}
+
+main section:nth-child(odd) div.link:hover {
+    text-decoration: underline;
+}
+
+main section:nth-child(4n+1),
+main section:nth-child(4n+2),
+main form section:nth-child(4n+1),
+main form section:nth-child(4n+2) {
+    background-color: var(--fourth-color);
+}
+
+.member-link, #arrowAnim {
+    cursor: pointer;
+}
+
+/* animation flèches retour */
+#arrowAnim {
+    position: absolute;
+    top: 10%;
+    left: 15%;
+    width: 7vw;
+    height: 7vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .arrow {
+    width: 2vw;
+    height: 2vw;
+    border: 3px solid;
+    border-color: white transparent transparent white;
+    transform: rotate(-45deg);
+  }
+  
+  .arrowSliding {
+    position: absolute;
+    -webkit-animation: slide 4s linear infinite; 
+            animation: slide 4s linear infinite;
+  }
+  
+  .delay1 {
+    -webkit-animation-delay: 1s; 
+      animation-delay: 1s;
+  }
+  .delay2 {
+    -webkit-animation-delay: 2s; 
+      animation-delay: 2s;
+  }
+  .delay3 {
+    -webkit-animation-delay: 3s; 
+      animation-delay: 3s;
+  }
+  
+  @-webkit-keyframes slide {
+    0% { opacity:0; transform: translateX(5vw); }
+    20% { opacity:1; transform: translateX(3vw); }
+    80% { opacity:1; transform: translateX(-3vw); }
+    100% { opacity:0; transform: translateX(-5vw); }
+  }
+  @keyframes slide {
+    0% { opacity:0; transform: translateX(5vw); }
+    20% { opacity:1; transform: translateX(3vw); }
+    80% { opacity:1; transform: translateX(-3vw); }
+    100% { opacity:0; transform: translateX(-5vw); }
+  }
+/*                          */
+
+#map {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+.school {
+    min-height: 200px;
+}
+
+button {
+    width: 120px;
+    height: 35px;
+    font-weight: bolder;
+}
+
+
+footer {
+    background-color: var(--third-color);
+    text-align: center;
+    order: 3;
+    flex-grow: 0;
+}
+
+footer span {
+    font-size: 20px;
+    font-size: calc(var(--font-size-title)/2.5);
+    color: var(--sixth-color);
+    position: relative;
+    top: 20%;
+}
+
+@media screen and (min-width: 700px) {
+    html {
+        background-color: white;
+    }
+    body {
+        --font-size-title: calc((22vw - 5rem) / 6);
+    }
+    .spinner {
+        font-size: calc((30vw - 4.5rem) / 7);
+    }
+    header {
+        margin: 0;
+        background-color: var(--fourth-color);
+    }
+    header > div:first-child {
+        width: 2vw;
+    }
+    header:nth-child(2) { /* < dev-o-beurre > */
+        display: block;
+    }
+    .title {
+        color:rgb(252, 217, 217);
+    }
+    nav {
+        width: 40% !important;
+        position: relative;
+        top: initial;
+        height: auto;
+        right: initial;
+        background-color: transparent;
+        border: none !important;
+    }
+    nav ul {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    nav ul li {
+        color: var(--sixth-color);
+    }
+    nav ul li:hover {
+        color: var(--primary-color);
+    }
+    .burger-button {
+        display: none;
+    }
+    main > * {
+        border: 1px solid var(--active-text-color);
+    }
+    main > div img {
+        overflow: hidden;
+        max-height: 60vh;
+        width: auto;
+        object-fit: cover;
+    }
+    main section:nth-child(odd) div.link {
+        font-size: x-large;
+    }
+    footer {
+
+    }
+}
