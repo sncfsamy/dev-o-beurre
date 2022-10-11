@@ -42,6 +42,7 @@ body {
     -o-transition: .5s linear;
     display: flex;
     flex-direction: column;
+    --body-width: 700px;
 }
 
 @font-face {
@@ -476,7 +477,7 @@ footer span {
         background-color: white;
     }
     body {
-        --font-size-title: calc((21vw - 5rem) / 6);
+        --font-size-title: calc((calc(var(--body-width) * 0.3px) - 5rem) / 6);
     }
     .spinner {
         font-size: calc((30vw - 4.5rem) / 7);
