@@ -220,7 +220,15 @@ function loadContent(content) {
     }
 }
 
+function setBodyWidthVar() {
+    const body = document.querySelector("body");
+    body.style.setProperty("--body-width", body.offsetWidth);
+    console.log(body.offsetWidth);
+}
+
 window.addEventListener("DOMContentLoaded", async (event) => {
+    window.addEventListener("resize", setBodyWidthVar);
+    setBodyWidthVar();
     /* make menu click event */
     var menu_elements = document.querySelectorAll('nav ul li');
     menu_elements[0].addEventListener('click', function() { 
