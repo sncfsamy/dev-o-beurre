@@ -476,7 +476,7 @@ footer span {
         background-color: white;
     }
     body {
-        --font-size-title: calc((22vw - 5rem) / 6);
+        --font-size-title: calc((21vw - 5rem) / 6);
     }
     .spinner {
         font-size: calc((30vw - 4.5rem) / 7);
