@@ -491,6 +491,9 @@ footer span {
     header:nth-child(2) { /* < dev-o-beurre > */
         display: block;
     }
+    .title {
+        color:rgb(252, 217, 217);
+    }
     nav {
         width: 40% !important;
         position: relative;
@@ -508,6 +511,9 @@ footer span {
     }
     nav ul li {
         color: var(--sixth-color);
+    }
+    nav ul li:hover {
+        color: var(--primary-color);
     }
     .burger-button {
         display: none;
