@@ -1,4 +1,4 @@
-let teamData, main;
+let teamData, main, map;
 let lastPage = "home";
 const maxMembersOnHome = 5;
 const arrow_back =`<div id="arrowAnim">
@@ -44,16 +44,18 @@ function compare( a, b ) {
 
 /* show/hide burger menu & burger button change */
 function burgerButtonClick() {
-    let elem = document.querySelector("nav");
-    let burgerButton = document.querySelector(".burger-button");
-    if (elem.style.width == "150px") {
-        burgerButton.classList.remove("burger-button-change");
-        elem.style.width = "0";
-        elem.style.border = "0px solid #333";
-    } else {
-        burgerButton.classList.add("burger-button-change");
-        elem.style.width = "150px";
-        elem.style.border = "1px solid #333";
+    if (window.innerWidth < 700) {
+        let elem = document.querySelector("nav");
+        let burgerButton = document.querySelector(".burger-button");
+        if (elem.style.width == "150px") {
+            burgerButton.classList.remove("burger-button-change");
+            elem.style.width = "0";
+            elem.style.border = "0px solid #333";
+        } else {
+            burgerButton.classList.add("burger-button-change");
+            elem.style.width = "150px";
+            elem.style.border = "1px solid #333";
+        }
     }
 }
 
@@ -66,6 +68,7 @@ function clearMain() {
 
 /* dark mode on/off */
 function darkMode() {
+    let html = document.querySelector('html');
     let body = document.querySelector('body');
     let moon = document.querySelector('.moon');
     let brightness = document.querySelector('.brightness');
@@ -75,11 +78,13 @@ function darkMode() {
         moon.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--light-mode-text'));
         body.style.setProperty('--active-background-color', styles.getPropertyValue('--light-mode-background'));
+        html.style.setProperty('background-color', styles.getPropertyValue('--light-mode-background'));
     } else {
         moon.classList.add("hide");
         brightness.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--dark-mode-text'));
         body.style.setProperty('--active-background-color', styles.getPropertyValue('--dark-mode-background'));
+        html.style.setProperty('background-color', styles.getPropertyValue('--dark-mode-background'));
     }
 }
 
@@ -94,6 +99,7 @@ function setTeamLinks() {
             main.innerHTML += "<div><img src=\"" + teamData[member]["photoURL"] + "\" />" + arrow_back + "</div>";
             main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
             document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
+            window.scrollTo(0, 0);
         });
     }
 }
@@ -145,25 +151,30 @@ function loadContent(content) {
             main.innerHTML += "<section><div>La team pain au chocolat</div></section>";
             main.innerHTML += "<section><div>Contrairement à nos confrères de Marseille, notre équipe ne mange que des pains au chocolat certifiés 100% non chocolatine.</div></section>";
             main.innerHTML += "<section class=\"school\"><div>Notre école: La Wild Code School @Nantes</div></section>";
-            main.innerHTML += "<section class=\"school\"><div id=\"map\"></div></section>";
-            var script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9yx2IQdSHi7szSs4hdnfpUTEXXfr64v8&callback=initMap';
-            script.async = true;
-            document.head.appendChild(script);
-            let map;
-            function initMap() {
-                map = new google.maps.Map(document.getElementById("map"), {
-                    center: { lat: 47.211332473444585, lng: -1.5475160636762386 },
-                    zoom: 17
-                });
-                const image = "./assets/images/wild-icon.png";
-                const beachMarker = new google.maps.Marker({
-                  position: { lat: 47.211332473444585, lng: -1.5475160636762386 }, 
-                  map,
-                  icon: image,
-                });
+            main.innerHTML += "<section class=\"school school_map\"><div id=\"map\"></div></section>";
+            if (map == undefined) {
+                var script = document.createElement('script');
+                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyB9yx2IQdSHi7szSs4hdnfpUTEXXfr64v8&callback=initMap';
+                script.async = true;
+                document.head.appendChild(script);
+                function initMap() {
+                    try {
+                        map = new google.maps.Map(document.getElementById("map"), {
+                            center: { lat: 47.211332473444585, lng: -1.5475160636762386 },
+                            zoom: 17
+                        });
+                        const image = "./assets/images/wild-icon.png";
+                        const beachMarker = new google.maps.Marker({
+                        position: { lat: 47.211332473444585, lng: -1.5475160636762386 }, 
+                        map,
+                        icon: image,
+                        });
+                    } catch {}
+                }
+                window.initMap = initMap;
+            } else {
+                window.initMap();
             }
-            window.initMap = initMap;
             break;
         case "contact_us":
             main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" /><p></p></div>";
@@ -208,7 +219,6 @@ function loadContent(content) {
             break;
     }
 }
-
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     /* make menu click event */

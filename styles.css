@@ -1,9 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    transition: .5s linear;
+    -webkit-transition: .5s linear;
+    -moz-transition: .5s linear;
+    -ms-transition: .5s linear;
+    -o-transition: .5s linear;
+}
+
 body {
     margin: 0;
     padding: 0;
+    margin-left: auto;
+    margin-right: auto;
     width: 100%;
-    min-height: 100vh;
     perspective: 1000px;
+    min-height: 100vh;
+    max-width: 900px;
     overflow-x: hidden;
     --light-mode-text: rgba(0, 0, 0, 0.697);
     --light-mode-background: #d1d0d0;
@@ -20,12 +35,13 @@ body {
     --font-size-title: calc((45vw - 4.5rem) / 6);
     color: var(--active-text-color);
     background-color: var(--active-background-color);
-    max-width: 1200px;
     transition: .5s linear;
     -webkit-transition: .5s linear;
     -moz-transition: .5s linear;
     -ms-transition: .5s linear;
     -o-transition: .5s linear;
+    display: flex;
+    flex-direction: column;
 }
 
 @font-face {
@@ -35,12 +51,16 @@ body {
 }
 
 header {
-    margin: 20px 20px 20px 0;
+    margin: 20px 20px 0 0;
     text-align:center;
-    height: 10vh;
+    height: auto;
+    line-height: 110%;
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
+    justify-content: space-between;
+    order: 1;
+    flex-grow: 0;
 }
 
 header > div:first-child {
@@ -242,7 +262,7 @@ nav {
     -o-transition: width 1s ease-in-out;
     transition: width 1s ease-in-out;
     width: 0px;
-    height: 90vh;
+    height: 89vh;
     text-shadow: 0 0 2px #000, 0 0 4px #000, 0 0 6px #000;
     border: 0px solid var(--active-text-color);
     background-color: var(--fourth-color);
@@ -261,6 +281,7 @@ nav ul li {
     color: var(--sixth-color);
     font-weight: bold;
     cursor: pointer;
+    text-align: left;
 }
 
 nav ul li:hover {
@@ -268,11 +289,13 @@ nav ul li:hover {
 }
 
 main {
-    top: 10vh;
+    order: 2;
+    flex-grow: 1;
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr;
-    align-items: center;
+    align-items: stretch;
+    height: 100%;
 }
 
 main > div {
@@ -285,23 +308,31 @@ main > div {
 }
 
 main > div img {
-  position: relative;
-  pointer-events: none;
-  width:100%;
-  height: auto;
-  z-index: -1;
+    position: relative;
+    pointer-events: none;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
 }
 
-main section {
-    grid-column: 1fr;
-    height:100px;
+main section:not(.school_map) {
+    margin-top: auto;
+    margin-bottom: auto;
+    height: 100%;
 }
 
-main section, main > div, main form section {
+main section, 
+main form section, 
+main > div {
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
+    min-height: 100px;
+}
+
+main section:not(.school_map) div {
+    margin: 20px;
 }
 
 main section div, main form section div {
@@ -323,8 +354,9 @@ main div.details p {
 }
 
 main section:nth-child(even) div[class*=" thumb_"] {
-    width: 100%;
-    height: 100%;
+    width: 80%;
+    height: 80%;
+    margin: 15px;
 }
 
 main section:nth-child(even) div img {
@@ -409,17 +441,26 @@ main form section:nth-child(4n+2) {
 #map {
     height: 100%;
     width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .school {
-    height: 20vh;
+    min-height: 200px;
 }
 
+button {
+    width: 120px;
+    height: 35px;
+    font-weight: bolder;
+}
+
+
 footer {
-    position: sticky;
-    bottom: 0;
     background-color: var(--third-color);
     text-align: center;
+    order: 3;
+    flex-grow: 0;
 }
 
 footer span {
@@ -428,4 +469,62 @@ footer span {
     color: var(--sixth-color);
     position: relative;
     top: 20%;
+}
+
+@media screen and (min-width: 700px) {
+    html {
+        background-color: white;
+    }
+    body {
+        --font-size-title: calc((22vw - 5rem) / 6);
+    }
+    .spinner {
+        font-size: calc((30vw - 4.5rem) / 7);
+    }
+    header {
+        margin: 0;
+        background-color: var(--fourth-color);
+    }
+    header > div:first-child {
+        width: 2vw;
+    }
+    header:nth-child(2) { /* < dev-o-beurre > */
+        display: block;
+    }
+    nav {
+        width: 40% !important;
+        position: relative;
+        top: initial;
+        height: auto;
+        right: initial;
+        background-color: transparent;
+        border: none !important;
+    }
+    nav ul {
+        padding: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+    }
+    nav ul li {
+        color: var(--sixth-color);
+    }
+    .burger-button {
+        display: none;
+    }
+    main > * {
+        border: 1px solid var(--active-text-color);
+    }
+    main > div img {
+        overflow: hidden;
+        max-height: 60vh;
+        width: auto;
+        object-fit: cover;
+    }
+    main section:nth-child(odd) div.link {
+        font-size: x-large;
+    }
+    footer {
+
+    }
 }
