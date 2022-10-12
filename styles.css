@@ -1,5 +1,7 @@
 * {
     box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
 }
 
 html {
@@ -496,21 +498,23 @@ footer span {
         color:rgb(252, 217, 217);
     }
     nav {
-        width: 40% !important;
+        width: 47% !important;
         position: relative;
         top: initial;
         height: auto;
         right: initial;
+        left: -15px;
         background-color: transparent;
         border: none !important;
     }
     nav ul {
-        padding: 0;
         width: 100%;
+        padding: 0;
         display: flex;
         justify-content: space-around;
     }
     nav ul li {
+        display: inline-block;
         color: var(--sixth-color);
     }
     nav ul li:hover {
