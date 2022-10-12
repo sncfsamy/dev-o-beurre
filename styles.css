@@ -32,7 +32,7 @@ body {
     --fourth-color: rgba(188, 4, 4, 0.5);
     --sixth-color: rgba(255, 255, 255, 0.768);
     --font-size-title: 20px;
-    --font-size-title: calc((42vw - 4.5rem) / 6);
+    --font-size-title: calc((40vw - 4.5rem) / 6);
     color: var(--active-text-color);
     background-color: var(--active-background-color);
     transition: .5s linear;
@@ -477,7 +477,7 @@ footer span {
         background-color: white;
     }
     body {
-        --font-size-title: calc((calc(var(--body-width) * 0.2px) - 5rem) / 6);
+        --font-size-title: calc((calc(var(--body-width) * 0.28px) - 5rem) / 6);
     }
     .spinner {
         font-size: calc((30vw - 4.5rem) / 7);
