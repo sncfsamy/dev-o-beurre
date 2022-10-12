@@ -134,7 +134,7 @@ header > div:first-child {
     line-height: normal;
     display: inline-block;
     vertical-align: middle;
-    font-size: calc((80vw - 4.5rem) / 7);
+    font-size: calc(var(--font-size-title) + 4vw);
     font-weight: bolder;
     text-align: center;
     transform-style: preserve-3d;
@@ -480,7 +480,7 @@ footer span {
         --font-size-title: calc((calc(var(--body-width) * 0.28px) - 5rem) / 6);
     }
     .spinner {
-        font-size: calc((30vw - 4.5rem) / 7);
+        font-size: calc(var(--font-size-title) + 2em);
     }
     header {
         margin: 0;
