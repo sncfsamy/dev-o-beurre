@@ -2,97 +2,97 @@
     {
         "name":"Samy L.",
         "gender":"male",
-        "photoURL":"assets/images/samy.png",
+        "photoURL":"assets/images/samy.jpg",
         "description":"Votre humble serviteur, toujours le mot pour rire, il saura vous les briser si vous ne rigolez pas à ses blagues naze !"
     },
     {
         "name":"David le N.",
         "gender":"male",
-        "photoURL":"assets/images/david.png",
+        "photoURL":"assets/images/david.jpg",
         "description":"Sérieux et discipliné, ne vous avisez pas de perturber son calme d'apparence imperturbable, où bien à vos risques et périls..."
     },
     {
         "name":"Marion E.",
         "gender":"female",
-        "photoURL":"assets/images/marion.png",
+        "photoURL":"assets/images/marion.jpg",
         "description":"Très studieuse, son courage n'a d'égale que sa persévérence, mais attention à son couroux..."
     },
     {
         "name":"Margaux B.",
         "gender":"female",
-        "photoURL":"assets/images/margaux.png",
+        "photoURL":"assets/images/margaux.jpg",
         "description":"Acharnée et discrète, aucun obstacle ne saura la déstabiliser !"
     },
     {
         "name":"Guillaume P.",
         "gender":"male",
-        "photoURL":"assets/images/guillaume.png",
+        "photoURL":"assets/images/guillaume.jpg",
         "description":"Toujours motivé à en faire toujours plus, plus rien ne peut l'arrêter lorsqu'il est lancé, essayez donc...!"
     },
     {
         "name":"Alban J.",
         "gender":"male",
-        "photoURL":"assets/images/alban.png",
+        "photoURL":"assets/images/alban.jpg",
         "description":"Joyeux luron de la bande, une blague après l'autre, il ne cessera jamais de vous faire rire !"
     },
     {
         "name":"Nadège D.",
         "gender":"female",
-        "photoURL":"assets/images/nadege.png",
+        "photoURL":"assets/images/nadege.jpg",
         "description":"Si vous ne la connaissez pas, vous ratez quelque chose ! Une fois qu'on la connait, on se demande comment on a fait pour s'en passer !"
     },
     {
         "name":"Julien M.",
         "gender":"male",
-        "photoURL":"assets/images/julien.png",
+        "photoURL":"assets/images/julien.jpg",
         "description":"Le cadet du groupe, mais ne vous laissez pas abuser par sa jovialité apparente..."
     },
     {
         "name":"Vincent R.",
         "gender":"male",
-        "photoURL":"assets/images/vincent.png",
+        "photoURL":"assets/images/vincent.jpg",
         "description":"Prêt à en découdre, il gravira les montagnes les unes après les autres !"
     },
     {
         "name":"Damien B.",
         "gender":"male",
-        "photoURL":"assets/images/damien.png",
+        "photoURL":"assets/images/damien.jpg",
         "description":"Le débuggeur fou, toujours à la recherche d'un problème à résoudre !"
     },
     {
         "name":"Jean Baptiste B.",
         "gender":"male",
-        "photoURL":"assets/images/jb.png",
+        "photoURL":"assets/images/jb.jpg",
         "description":"Le barbu du groupe ! Mais il ne se résume pas à ça, approchez donc ! Il ne mord pas...normalement !"
     },
     {
         "name":"Elodie S.",
         "gender":"female",
-        "photoURL":"assets/images/elodie.png",
+        "photoURL":"assets/images/elodie.jpg",
         "description":"Toujours pleine d'entreint ! Avec elle vous ne vous ennuierez jamais !"
     },
     {
         "name":"Denis P.",
         "gender":"male",
-        "photoURL":"assets/images/denis.png",
+        "photoURL":"assets/images/denis.jpg",
         "description":"Notre expert multi domaines, un problème ? Demandez lui !"
     },
     {
         "name":"Danyel D.",
         "gender":"male",
-        "photoURL":"assets/images/danyel.png",
+        "photoURL":"assets/images/danyel.jpg",
         "description":"La langue bien pendue et la tête bien lancée ! Distribution de coups de boule gratuit les mardi et jeudi !"
     },
     {
         "name":"Nicolas B.",
         "gender":"male",
-        "photoURL":"assets/images/nicolas.png",
+        "photoURL":"assets/images/nicolas.jpg",
         "description":"Dans la catégorie des perles du groupe, je demande le père, un coeur gros comme ça !"
     },
     {
         "name":"Bertrand D.",
         "gender":"male",
-        "photoURL":"assets/images/bertrand.png",
+        "photoURL":"assets/images/bertrand.jpg",
         "description":"Très studieux, trop studieux ? Il ne s'arrêtera de bucher que lorsqu'il sera capable de créer une fusée avec sa souris !"
     }
 ]

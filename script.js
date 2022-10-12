@@ -122,7 +122,7 @@ function loadContent(content) {
 
     switch(content) {
         case "team":
-            main.innerHTML += "<div><img src=\"assets/images/team.png\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/team.jpg\" /><p></p></div>";
 
             for (let teamMember in teamData) {
                 main.innerHTML += "<section><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\"/></div></section>";
@@ -145,7 +145,7 @@ function loadContent(content) {
             setTeamLinks();
             break;
         case "about":
-            main.innerHTML += "<div><img src=\"assets/images/wild.png\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" /><p></p></div>";
             main.innerHTML += "<section><div>Développeur web et web mobile</div></section>";
             main.innerHTML += "<section><div>Actuellement en formation, notre équipe va devenir la meilleure équipe de développement web de l'entreprise.</div></section>";
             main.innerHTML += "<section><div>La team pain au chocolat</div></section>";
