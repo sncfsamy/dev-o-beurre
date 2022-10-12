@@ -98,7 +98,7 @@ function setTeamLinks() {
         links[i].addEventListener('click', function() {
             const member = this.dataset.member;
             clearMain();
-            main.innerHTML += "<div><img src=\"" + teamData[member]["photoURL"] + "\" />" + arrow_back + "</div>";
+            main.innerHTML += "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
             main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
             document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
             window.scrollTo(0, 0);
@@ -157,10 +157,10 @@ function loadContent(content) {
 
     switch(content) {
         case "team":
-            main.innerHTML += "<div><img src=\"assets/images/team.jpg\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/team.jpg\" alt=\"Photo de groupe.\"/><p></p></div>";
 
             for (let teamMember in teamData) {
-                main.innerHTML += "<section><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\"/></div></section>";
+                main.innerHTML += "<section><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + teamData[teamMember]["name"] + ".\"/></div></section>";
                 main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + teamMember + "\">" + teamData[teamMember]["name"] + "</div></section>";
 
                 let canvas = document.createElement("canvas");
@@ -180,7 +180,7 @@ function loadContent(content) {
             setTeamLinks();
             break;
         case "about":
-            main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" alt=\"Publicité de la Wild Code School.\"/><p></p></div>";
             main.innerHTML += "<section><div>Développeur web et web mobile</div></section>";
             main.innerHTML += "<section><div>Actuellement en formation, notre équipe va devenir la meilleure équipe de développement web de l'entreprise.</div></section>";
             main.innerHTML += "<section><div>La team pain au chocolat</div></section>";
@@ -212,7 +212,7 @@ function loadContent(content) {
             }
             break;
         case "contact_us":
-            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\"/><p></p></div>";
             main.innerHTML += "<form name=\"contactus\" action=\"mailto:samy-lamiri_student2022@wilder.school\" method=\"get\" enctype=\"text/plain\"><section><div>Pour nous contacter:</div></section>";
             main.innerHTML += "<section><div>Remplissez le formulaire ci-dessous.</div></section>";
             main.innerHTML += "<section><div><label for=\"name\">Nom:</label></div></section>";
@@ -226,12 +226,12 @@ function loadContent(content) {
             break;
         case "home":
         default:
-            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" /><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\"/><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {
                     if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
-                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\"/></div></section>";
+                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
                         main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
 
                         let canvas = document.createElement("canvas");
