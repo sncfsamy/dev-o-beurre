@@ -67,19 +67,21 @@ function clearMain() {
 }
 
 /* dark mode on/off */
-function darkMode() {
+function darkMode(mode) {
     let html = document.querySelector('html');
     let body = document.querySelector('body');
     let moon = document.querySelector('.moon');
     let brightness = document.querySelector('.brightness');
     let styles = getComputedStyle(body);
-    if (styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text')) {
+    if (mode == "light" || styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text')) {
+        setCookie("lightMode", "light", 300);
         brightness.classList.add("hide");
         moon.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--light-mode-text'));
         body.style.setProperty('--active-background-color', styles.getPropertyValue('--light-mode-background'));
         html.style.setProperty('background-color', styles.getPropertyValue('--light-mode-background'));
     } else {
+        setCookie("lightMode", "dark", 300);
         moon.classList.add("hide");
         brightness.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--dark-mode-text'));
@@ -112,6 +114,39 @@ function pictures_hover(element) {
 function pictures_unhover(element) {
     element.setAttribute('src', './assets/images/picture_border.png');
 }
+/*                                       */
+
+
+
+function setBodyWidthVar() {
+    const body = document.querySelector("body");
+    body.style.setProperty("--body-width", body.offsetWidth);
+    console.log(body.offsetWidth);
+}
+
+/* js to set/get cookie */
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=None;Secure;path=/";
+}
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+      let c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
+}
+/*                      */
 
 /* main changing content after menu click */
 function loadContent(content) {
@@ -220,12 +255,6 @@ function loadContent(content) {
     }
 }
 
-function setBodyWidthVar() {
-    const body = document.querySelector("body");
-    body.style.setProperty("--body-width", body.offsetWidth);
-    console.log(body.offsetWidth);
-}
-
 window.addEventListener("DOMContentLoaded", async (event) => {
     window.addEventListener("resize", setBodyWidthVar);
     setBodyWidthVar();
@@ -257,4 +286,8 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     teamData.sort(compare);
     /* load content */
     loadContent("home");
+    const lightMode = getCookie("lightMode");
+    if (lightMode != undefined && lightMode != null) {
+        darkMode(lightMode);
+    }
 });
