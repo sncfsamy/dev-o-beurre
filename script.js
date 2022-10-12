@@ -255,9 +255,36 @@ function loadContent(content) {
     }
 }
 
+/* preloading images */
+function imagePreloader(src) {
+    var img = document.createElement('link');
+    img.rel = "preload";
+    img.as = "image";
+    img.src = src;
+    document.head.appendChild(img);
+}
+
 window.addEventListener("DOMContentLoaded", async (event) => {
+    /* load team members from json file */
+    const request = new Request("./assets/data.json");
+    const response = await fetch(request);
+    teamData = await response.json();
+    teamData.sort(compare);
+
+    /* preload all images to avoid images loading when click on menu item */
+    imagePreloader("./assets/images/");
+    imagePreloader("./assets/images/petit-lu.png");
+    imagePreloader("./assets/images/team.jpg");
+    imagePreloader("./assets/images/wild.jpg");
+    imagePreloader("./assets/images/contact-us.png");
+    imagePreloader("./assets/images/picture_border.png");
+    imagePreloader("./assets/images/picture_border_hover.png");
+    teamData.forEach((member) => { imagePreloader(member["photoURL"]) });
+
+    /* used to set real body width into --var to help to set font-size */
     window.addEventListener("resize", setBodyWidthVar);
     setBodyWidthVar();
+
     /* make menu click event */
     var menu_elements = document.querySelectorAll('nav ul li');
     menu_elements[0].addEventListener('click', function() { 
@@ -278,14 +305,11 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     });
     /* show burger menu before content loading */
     burgerButtonClick();
-    
-    /* load team from file */
-    const request = new Request("./assets/data.json");
-    const response = await fetch(request);
-    teamData = await response.json();
-    teamData.sort(compare);
+
     /* load content */
     loadContent("home");
+
+    /* load cookie to reset light/dark mode following last visit of this client */
     const lightMode = getCookie("lightMode");
     if (lightMode != undefined && lightMode != null) {
         darkMode(lightMode);
