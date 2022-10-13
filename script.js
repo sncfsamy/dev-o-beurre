@@ -275,7 +275,6 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     teamData.sort(compare);
 
     /* preload all images to avoid images loading when click on menu item */
-    imagePreloader("./assets/images/");
     imagePreloader("./assets/images/petit-lu.png");
     imagePreloader("./assets/images/team.jpg");
     imagePreloader("./assets/images/wild.jpg");
