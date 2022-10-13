@@ -479,7 +479,7 @@ footer span {
         background-color: white;
     }
     body {
-        --font-size-title: calc((calc(var(--body-width) * 0.27px) - 5rem) / 6);
+        --font-size-title: calc((calc(var(--body-width) * 0.255px) - 5rem) / 6);
     }
     .spinner {
         font-size: calc(var(--font-size-title) + 2em);
