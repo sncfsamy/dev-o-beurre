@@ -254,11 +254,11 @@ function loadContent(content) {
 }
 
 /* preloading images */
-function imagePreloader(src) {
+function imagePreloader(href) {
     var img = document.createElement('link');
     img.rel = "preload";
     img.as = "image";
-    img.src = src;
+    img.href = href;
     document.head.appendChild(img);
 }
 
