@@ -1,5 +1,5 @@
 let teamData, main, map, lastPage = "home";
-const maxMembersOnHome = 5;
+const maxMembersOnHome = 4;
 const arrow_back =`<div id="arrowAnim">
 <div class="arrowSliding">
   <div class="arrow"></div>
@@ -155,11 +155,12 @@ function loadContent(content) {
 
     switch(content) {
         case "team":
+            main.classList.toggle("team-member", true);
             main.innerHTML += "<div><img src=\"assets/images/team.jpg\" alt=\"Photo de groupe.\"/><p></p></div>";
 
             for (let teamMember in teamData) {
-                main.innerHTML += "<section><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + teamData[teamMember]["name"] + ".\"/></div></section>";
-                main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + teamMember + "\">" + teamData[teamMember]["name"] + "</div></section>";
+                main.innerHTML += "<section class=\"team-member\"><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + teamData[teamMember]["name"] + ".\"/></div></section>";
+                main.innerHTML += "<section class=\"team-member\"><div class=\"member-link link\" data-member=\"" + teamMember + "\">" + teamData[teamMember]["name"] + "</div></section>";
 
                 let canvas = document.createElement("canvas");
                 let ctx = canvas.getContext('2d');
@@ -178,6 +179,7 @@ function loadContent(content) {
             setTeamLinks();
             break;
         case "about":
+            main.classList.toggle("team-member", false);
             main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" alt=\"Publicité de la Wild Code School.\"/><p></p></div>";
             main.innerHTML += "<section><div>Développeur web et web mobile</div></section>";
             main.innerHTML += "<section><div>Actuellement en formation, notre équipe va devenir la meilleure équipe de développement web de l'entreprise.</div></section>";
@@ -210,27 +212,29 @@ function loadContent(content) {
             }
             break;
         case "contact_us":
+            main.classList.toggle("team-member", false);
             main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\"/><p></p></div>";
             main.innerHTML += "<form name=\"contactus\" action=\"mailto:samy-lamiri_student2022@wilder.school\" method=\"get\" enctype=\"text/plain\"><section><div>Pour nous contacter:</div></section>";
             main.innerHTML += "<section><div>Remplissez le formulaire ci-dessous.</div></section>";
             main.innerHTML += "<section><div><label for=\"name\">Nom:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
+            main.innerHTML += "<section><div><input type=\"text\" id=\"name\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"mail\">Mail:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
+            main.innerHTML += "<section><div><input type=\"text\" id=\"mail\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"message\">Message:</label></div></section>";
-            main.innerHTML += "<section><div><textarea name=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
+            main.innerHTML += "<section><div><textarea name=\"message\" id=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
             main.innerHTML += "<section><div>Lorsque vous êtes prêt, cliquez sur <b>Envoyer</b>.</section>";
             main.innerHTML += "<section><div><button onclick=\"document.getElementsByName('contactus')[0].submit();\">Envoyer</button></section></form>";
             break;
         case "home":
         default:
+            main.classList.toggle("team-member", true);
             main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\"/><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {
                     if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
-                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
-                        main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
+                        main.innerHTML += "<section class=\"team-member\"><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
+                        main.innerHTML += "<section class=\"team-member\"><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
 
                         let canvas = document.createElement("canvas");
                         let ctx = canvas.getContext('2d');
