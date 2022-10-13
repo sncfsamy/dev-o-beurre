@@ -228,7 +228,7 @@ function loadContent(content) {
         case "home":
         default:
             main.classList.toggle("team-member", true);
-            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\" /><p></p></div>";
+            main.innerHTML += "<div><img class=\"petit-beurre\" src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\" /><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {

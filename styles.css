@@ -530,6 +530,9 @@ footer span {
     .burger-button {
         display: none;
     }
+    main div .petit-beurre {
+        max-height: 50vh;
+    }
     main.team-member {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
