@@ -1,5 +1,4 @@
-let teamData, main, map;
-let lastPage = "home";
+let teamData, main, map, lastPage = "home";
 const maxMembersOnHome = 5;
 const arrow_back =`<div id="arrowAnim">
 <div class="arrowSliding">
@@ -117,11 +116,9 @@ function pictures_unhover(element) {
 /*                                       */
 
 
-
 function setBodyWidthVar() {
     const body = document.querySelector("body");
     body.style.setProperty("--body-width", body.offsetWidth);
-    console.log(body.offsetWidth);
 }
 
 /* js to set/get cookie */
@@ -131,6 +128,7 @@ function setCookie(cname, cvalue, exdays) {
     let expires = "expires="+ d.toUTCString();
     document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=None;Secure;path=/";
 }
+
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -199,7 +197,7 @@ function loadContent(content) {
                             zoom: 17
                         });
                         const image = "./assets/images/wild-icon.png";
-                        const beachMarker = new google.maps.Marker({
+                        const wildMarker = new google.maps.Marker({
                         position: { lat: 47.211332473444585, lng: -1.5475160636762386 }, 
                         map,
                         icon: image,
@@ -231,7 +229,7 @@ function loadContent(content) {
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {
                     if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
-                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
+                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
                         main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
 
                         let canvas = document.createElement("canvas");
@@ -284,6 +282,8 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     /* used to set real body width into --var to help to set font-size */
     window.addEventListener("resize", setBodyWidthVar);
     setBodyWidthVar();
+
+    document.querySelector(".burger-button").addEventListener("click", burgerButtonClick);
 
     /* make menu click event */
     var menu_elements = document.querySelectorAll('nav ul li');

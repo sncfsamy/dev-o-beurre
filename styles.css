@@ -61,7 +61,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    justify-content: space-between;
+    gap: 15px;
     order: 1;
     flex-grow: 0;
 }
@@ -400,45 +400,45 @@ main form section:nth-child(4n+2) {
     align-items: center;
   }
   
-  .arrow {
+.arrow {
     width: 2vw;
     height: 2vw;
     border: 3px solid;
     border-color: white transparent transparent white;
     transform: rotate(-45deg);
-  }
+}
   
-  .arrowSliding {
+.arrowSliding {
     position: absolute;
     -webkit-animation: slide 4s linear infinite; 
             animation: slide 4s linear infinite;
-  }
+}
   
-  .delay1 {
+.delay1 {
     -webkit-animation-delay: 1s; 
-      animation-delay: 1s;
-  }
-  .delay2 {
+    animation-delay: 1s;
+}
+.delay2 {
     -webkit-animation-delay: 2s; 
-      animation-delay: 2s;
-  }
-  .delay3 {
+    animation-delay: 2s;
+}
+.delay3 {
     -webkit-animation-delay: 3s; 
-      animation-delay: 3s;
-  }
+    animation-delay: 3s;
+}
   
-  @-webkit-keyframes slide {
+@-webkit-keyframes slide {
     0% { opacity:0; transform: translateX(5vw); }
     20% { opacity:1; transform: translateX(3vw); }
     80% { opacity:1; transform: translateX(-3vw); }
     100% { opacity:0; transform: translateX(-5vw); }
-  }
-  @keyframes slide {
+}
+@keyframes slide {
     0% { opacity:0; transform: translateX(5vw); }
     20% { opacity:1; transform: translateX(3vw); }
     80% { opacity:1; transform: translateX(-3vw); }
     100% { opacity:0; transform: translateX(-5vw); }
-  }
+}
 /*                          */
 
 #map {
@@ -467,7 +467,7 @@ footer {
 }
 
 footer span {
-    font-size: 20px;
+    font-size: 16px;
     font-size: calc(var(--font-size-title)/2.5);
     color: var(--sixth-color);
     position: relative;
@@ -479,7 +479,7 @@ footer span {
         background-color: white;
     }
     body {
-        --font-size-title: calc((calc(var(--body-width) * 0.28px) - 5rem) / 6);
+        --font-size-title: calc((calc(var(--body-width) * 0.27px) - 5rem) / 6);
     }
     .spinner {
         font-size: calc(var(--font-size-title) + 2em);
@@ -491,7 +491,7 @@ footer span {
     header > div:first-child {
         width: 2vw;
     }
-    header:nth-child(2) { /* < dev-o-beurre > */
+    header:nth-child(2) { /* titre (< les dev-o-beurre >) */
         display: block;
     }
     .title {
@@ -534,5 +534,11 @@ footer span {
     }
     main section:nth-child(odd) div.link {
         font-size: x-large;
+    }
+    main section:nth-child(even) div[class*=" thumb_"] {
+        width: 85%;
+        height: 80%;
+        object-fit: contain;
+        margin: 15px;
     }
 }
