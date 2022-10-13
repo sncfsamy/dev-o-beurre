@@ -213,22 +213,22 @@ function loadContent(content) {
             break;
         case "contact_us":
             main.classList.toggle("team-member", false);
-            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\"/><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\" /><p></p></div>";
             main.innerHTML += "<form name=\"contactus\" action=\"mailto:samy-lamiri_student2022@wilder.school\" method=\"get\" enctype=\"text/plain\"><section><div>Pour nous contacter:</div></section>";
             main.innerHTML += "<section><div>Remplissez le formulaire ci-dessous.</div></section>";
             main.innerHTML += "<section><div><label for=\"name\">Nom:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" id=\"name\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
+            main.innerHTML += "<section><div class=\"form\"><input type=\"text\" id=\"name\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"mail\">Mail:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" id=\"mail\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
+            main.innerHTML += "<section><div class=\"form\"><input type=\"text\" id=\"mail\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"message\">Message:</label></div></section>";
-            main.innerHTML += "<section><div><textarea name=\"message\" id=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
+            main.innerHTML += "<section><div class=\"form textarea\"><textarea name=\"message\" id=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
             main.innerHTML += "<section><div>Lorsque vous êtes prêt, cliquez sur <b>Envoyer</b>.</section>";
             main.innerHTML += "<section><div><button onclick=\"document.getElementsByName('contactus')[0].submit();\">Envoyer</button></section></form>";
             break;
         case "home":
         default:
             main.classList.toggle("team-member", true);
-            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\"/><p></p></div>";
+            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\" /><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {
@@ -308,6 +308,7 @@ window.addEventListener("DOMContentLoaded", async (event) => {
         // Contactez nous
         loadContent("contact_us");
     });
+
     /* show burger menu before content loading */
     burgerButtonClick();
 
