@@ -259,6 +259,7 @@ function imagePreloader(href) {
     img.rel = "preload";
     img.as = "image";
     img.href = href;
+    img.src = href;
     document.head.appendChild(img);
 }
 
