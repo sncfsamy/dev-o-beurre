@@ -203,6 +203,8 @@ function loadContent(content) {
     main = document.querySelector("main");
     burgerButtonClick();
     clearMain();
+    if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
+    if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
 
     switch(content) {
         case "team":
