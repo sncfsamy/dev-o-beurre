@@ -338,11 +338,15 @@ main > div {
     justify-content: center;
     align-items: center;
     text-align: center;
-    min-height: 100px;
+    min-height: 80px;
 }
 
 main section:not(.school_map) div {
     margin: 20px;
+    -webkit-transition: opacity 1s ease-in-out;
+    -moz-transition: opacity 1s ease-in-out;
+    -o-transition: opacity 1s ease-in-out;
+    transition: opacity 1s ease-in-out;
 }
 
 main section div, main form section div {
@@ -364,9 +368,7 @@ main div.details p {
 }
 
 main section:nth-child(even) div[class*=" thumb_"] {
-    width: 80%;
-    height: 80%;
-    margin: 15px;
+    margin: 0;
 }
 
 main section:nth-child(even) div img {
@@ -389,6 +391,10 @@ main section:nth-child(4n+2),
 main form section:nth-child(4n+1),
 main form section:nth-child(4n+2) {
     background-color: var(--fourth-color);
+}
+
+.hide-opacity div {
+    opacity: 0;
 }
 
 .member-link, #arrowAnim {
@@ -551,6 +557,10 @@ footer span {
         width: 90%;
         height: 50%;
     }
+    main section.team-member {
+        height: 20vh;
+        overflow: hidden;
+    }
     main section div.textarea {
         height: 80%;
     }
@@ -566,10 +576,7 @@ footer span {
         font-size: x-large;
     }
     main section:nth-child(even) div[class*=" thumb_"] {
-        width: 85%;
-        height: 80%;
-        object-fit: contain;
-        margin: 15px;
+        object-fit: cover;
     }
     input, textarea {
         width: 100%;

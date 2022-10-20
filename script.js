@@ -1,4 +1,4 @@
-let teamData, main, map, lastPage = "home";
+let teamData, main, map, homeInterval, homeTimeout = [], lastPage = "home";
 const maxMembersOnHome = 4;
 const arrow_back =`<div id="arrowAnim">
 <div class="arrowSliding">
@@ -89,19 +89,23 @@ function darkMode(mode) {
     }
 }
 
+
 /* make pictures and name links on home and team page */
+function setLink(element) {
+    if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
+    if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
+    const member = element.target!=undefined ? element.target.dataset.member : element.dataset.member;
+    clearMain();
+    main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
+    main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
+    document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
+    window.scrollTo(0, 0);
+}
 function setTeamLinks() {
     const links = document.querySelectorAll("section div.member-link");
     for (let i=0; i < links.length; i++)
     {
-        links[i].addEventListener('click', function() {
-            const member = this.dataset.member;
-            clearMain();
-            main.innerHTML += "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
-            main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
-            document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
-            window.scrollTo(0, 0);
-        });
+        links[i].addEventListener('click', function() { setLink(this); });
     }
 }
 
@@ -114,7 +118,6 @@ function pictures_unhover(element) {
     element.setAttribute('src', './assets/images/picture_border.png');
 }
 /*                                       */
-
 
 function setBodyWidthVar() {
     const body = document.querySelector("body");
@@ -145,6 +148,54 @@ function getCookie(cname) {
     return "";
 }
 /*                      */
+
+/* replace members by others on the home page */
+function pickMembers() {
+    const homeMembers = randomMembers(teamData);
+    let sections = document.querySelectorAll("main section.team-member");
+    let i = 0;
+    for (let teamMember in homeMembers) {
+        for (let member in teamData) {
+            if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
+                const n = (i+1)*2-2;
+                homeTimeout[n] = setTimeout(function() { hideThenReplaceAMember(homeMembers,teamMember,member,sections,n); }, i*3000);
+                i++;
+            }
+        }
+    }
+}
+function hideThenReplaceAMember(homeMembers,teamMember,member,sections,n) {
+    sections[n].removeEventListener("click", setLink);
+    sections[n+1].removeEventListener("click", setLink);
+    sections[n].classList.add("hide-opacity");
+    sections[n+1].classList.add("hide-opacity");
+    homeTimeout[n] = setTimeout(function() {
+        replaceAMember(homeMembers,teamMember,member,sections,n);
+    }, 1000);
+}
+function replaceAMember(homeMembers,teamMember,member,sections,n) {
+    sections[n].innerHTML = "<div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div>";
+    sections[n+1].innerHTML = "<div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div>";
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext('2d');
+    let avatar = new Image();
+    avatar.src = homeMembers[teamMember]["photoURL"];
+    avatar.addEventListener('load', function() {
+        if(homeMembers[teamMember]["gender"] == "male") {
+            ctx.drawImage(avatar, 100, 80, 700, 500, 0, 0, 350, 250);
+        } else {
+            ctx.drawImage(avatar, 100, 170, 700, 500, 0, 0, 350, 250);
+        }
+        let url = canvas.toDataURL();
+        document.getElementsByClassName("thumb_" + member)[0].style.backgroundImage = 'url(\'' + url + '\')';
+    }, false);
+    sections[n].addEventListener("click", setLink);
+    sections[n+1].addEventListener("click", setLink);
+    homeTimeout[n] = setTimeout(function() {
+        sections[n].classList.remove("hide-opacity");
+        sections[n+1].classList.remove("hide-opacity");
+    }, 100);
+}
 
 /* main changing content after menu click */
 function loadContent(content) {
@@ -253,6 +304,10 @@ function loadContent(content) {
                 }
             }
             setTeamLinks();
+            setTimeout(function() {
+                pickMembers();
+                homeInterval = setInterval(pickMembers,22500);
+            }, 10000);
             break;
     }
 }
