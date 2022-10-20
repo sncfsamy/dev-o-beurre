@@ -1,4 +1,4 @@
-let teamData, main, map, homeInterval, homeTimeout = [], lastPage = "home";
+let teamData, main, map, homeInterval, homeTimeout, homeTimeouts = [], lastPage = "home", onPicture = false;
 const maxMembersOnHome = 4;
 const arrow_back =`<div id="arrowAnim">
 <div class="arrowSliding">
@@ -73,14 +73,14 @@ function darkMode(mode) {
     let brightness = document.querySelector('.brightness');
     let styles = getComputedStyle(body);
     if (mode == "light" || styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text')) {
-        setCookie("lightMode", "light", 300);
+        window.localStorage.setItem("lightMode", "light");
         brightness.classList.add("hide");
         moon.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--light-mode-text'));
         body.style.setProperty('--active-background-color', styles.getPropertyValue('--light-mode-background'));
         html.style.setProperty('background-color', styles.getPropertyValue('--light-mode-background'));
     } else {
-        setCookie("lightMode", "dark", 300);
+        window.localStorage.setItem("lightMode", "dark");
         moon.classList.add("hide");
         brightness.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--dark-mode-text'));
@@ -89,6 +89,12 @@ function darkMode(mode) {
     }
 }
 
+function backFromPicture() {
+    clearMain(); 
+    burgerButtonClick(); 
+    loadContent(lastPage); 
+    onPicture = false;
+}
 
 /* make pictures and name links on home and team page */
 function setLink(element) {
@@ -98,7 +104,8 @@ function setLink(element) {
     clearMain();
     main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
     main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
-    document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
+    document.getElementById("arrowAnim").addEventListener("click", backFromPicture);
+    onPicture = true;
     window.scrollTo(0, 0);
 }
 function setTeamLinks() {
@@ -124,31 +131,6 @@ function setBodyWidthVar() {
     body.style.setProperty("--body-width", body.offsetWidth);
 }
 
-/* js to set/get cookie */
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=None;Secure;path=/";
-}
-
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
-    }
-    return "";
-}
-/*                      */
-
 /* replace members by others on the home page */
 function pickMembers() {
     const homeMembers = randomMembers(teamData);
@@ -158,7 +140,7 @@ function pickMembers() {
         for (let member in teamData) {
             if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
                 const n = (i+1)*2-2;
-                homeTimeout[n] = setTimeout(function() { hideThenReplaceAMember(homeMembers,teamMember,member,sections,n); }, i*3000);
+                homeTimeouts[n] = setTimeout(function() { hideThenReplaceAMember(homeMembers,teamMember,member,sections,n); }, i*3000);
                 i++;
             }
         }
@@ -169,7 +151,7 @@ function hideThenReplaceAMember(homeMembers,teamMember,member,sections,n) {
     sections[n+1].removeEventListener("click", setLink);
     sections[n].classList.add("hide-opacity");
     sections[n+1].classList.add("hide-opacity");
-    homeTimeout[n] = setTimeout(function() {
+    homeTimeouts[n] = setTimeout(function() {
         replaceAMember(homeMembers,teamMember,member,sections,n);
     }, 1000);
 }
@@ -191,7 +173,7 @@ function replaceAMember(homeMembers,teamMember,member,sections,n) {
     }, false);
     sections[n].addEventListener("click", setLink);
     sections[n+1].addEventListener("click", setLink);
-    homeTimeout[n] = setTimeout(function() {
+    homeTimeouts[n] = setTimeout(function() {
         sections[n].classList.remove("hide-opacity");
         sections[n+1].classList.remove("hide-opacity");
     }, 100);
@@ -204,7 +186,8 @@ function loadContent(content) {
     burgerButtonClick();
     clearMain();
     if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
-    if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
+    if (homeTimeout != undefined) { clearTimeout(homeTimeout); homeTimeout = undefined; }
+    if (homeTimeouts.length > 0) { homeTimeouts.forEach(t => clearTimeout(t)); homeTimeouts = []; }
 
     switch(content) {
         case "team":
@@ -306,7 +289,7 @@ function loadContent(content) {
                 }
             }
             setTeamLinks();
-            setTimeout(function() {
+            homeTimeout = setTimeout(function() {
                 pickMembers();
                 homeInterval = setInterval(pickMembers,22500);
             }, 10000);
@@ -323,6 +306,18 @@ function imagePreloader(href) {
     img.src = href;
     document.head.appendChild(img);
 }
+
+/* intercept android back button */
+document.addEventListener('backbutton', function(){
+    if(onPicture) {
+        backFromPicture();
+     return false;
+    }
+    else
+    {
+      navigator.app.exitApp();
+    }
+  });
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     /* load team members from json file */
@@ -371,8 +366,8 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     /* load content */
     loadContent("home");
 
-    /* load cookie to reset light/dark mode following last visit of this client */
-    const lightMode = getCookie("lightMode");
+    /* load localstorage to reset light/dark mode following last visit of this client */
+    const lightMode = window.localStorage.getItem("lightMode");
     if (lightMode != undefined && lightMode != null) {
         darkMode(lightMode);
     }
