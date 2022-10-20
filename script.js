@@ -1,6 +1,5 @@
-let teamData, main, map;
-let lastPage = "home";
-const maxMembersOnHome = 5;
+let teamData, main, map, homeInterval, homeTimeout, homeTimeouts = [], lastPage = "home", onPicture = false;
+const maxMembersOnHome = 4;
 const arrow_back =`<div id="arrowAnim">
 <div class="arrowSliding">
   <div class="arrow"></div>
@@ -74,14 +73,14 @@ function darkMode(mode) {
     let brightness = document.querySelector('.brightness');
     let styles = getComputedStyle(body);
     if (mode == "light" || styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text')) {
-        setCookie("lightMode", "light", 300);
+        window.localStorage.setItem("lightMode", "light");
         brightness.classList.add("hide");
         moon.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--light-mode-text'));
         body.style.setProperty('--active-background-color', styles.getPropertyValue('--light-mode-background'));
         html.style.setProperty('background-color', styles.getPropertyValue('--light-mode-background'));
     } else {
-        setCookie("lightMode", "dark", 300);
+        window.localStorage.setItem("lightMode", "dark");
         moon.classList.add("hide");
         brightness.classList.remove("hide");
         body.style.setProperty('--active-text-color', styles.getPropertyValue('--dark-mode-text'));
@@ -90,19 +89,30 @@ function darkMode(mode) {
     }
 }
 
+function backFromPicture() {
+    clearMain(); 
+    burgerButtonClick(); 
+    loadContent(lastPage); 
+    onPicture = false;
+}
+
 /* make pictures and name links on home and team page */
+function setLink(element) {
+    if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
+    if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
+    const member = element.target!=undefined ? element.target.dataset.member : element.dataset.member;
+    clearMain();
+    main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
+    main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
+    document.getElementById("arrowAnim").addEventListener("click", backFromPicture);
+    onPicture = true;
+    window.scrollTo(0, 0);
+}
 function setTeamLinks() {
     const links = document.querySelectorAll("section div.member-link");
     for (let i=0; i < links.length; i++)
     {
-        links[i].addEventListener('click', function() {
-            const member = this.dataset.member;
-            clearMain();
-            main.innerHTML += "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
-            main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
-            document.getElementById("arrowAnim").addEventListener("click", function() { clearMain(); burgerButtonClick(); loadContent(lastPage); });
-            window.scrollTo(0, 0);
-        });
+        links[i].addEventListener('click', function() { setLink(this); });
     }
 }
 
@@ -116,37 +126,58 @@ function pictures_unhover(element) {
 }
 /*                                       */
 
-
-
 function setBodyWidthVar() {
     const body = document.querySelector("body");
     body.style.setProperty("--body-width", body.offsetWidth);
-    console.log(body.offsetWidth);
 }
 
-/* js to set/get cookie */
-function setCookie(cname, cvalue, exdays) {
-    const d = new Date();
-    d.setTime(d.getTime() + (exdays*24*60*60*1000));
-    let expires = "expires="+ d.toUTCString();
-    document.cookie = cname + "=" + cvalue + ";" + expires + ";SameSite=None;Secure;path=/";
-}
-function getCookie(cname) {
-    let name = cname + "=";
-    let decodedCookie = decodeURIComponent(document.cookie);
-    let ca = decodedCookie.split(';');
-    for(let i = 0; i <ca.length; i++) {
-      let c = ca[i];
-      while (c.charAt(0) == ' ') {
-        c = c.substring(1);
-      }
-      if (c.indexOf(name) == 0) {
-        return c.substring(name.length, c.length);
-      }
+/* replace members by others on the home page */
+function pickMembers() {
+    const homeMembers = randomMembers(teamData);
+    let sections = document.querySelectorAll("main section.team-member");
+    let i = 0;
+    for (let teamMember in homeMembers) {
+        for (let member in teamData) {
+            if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
+                const n = (i+1)*2-2;
+                homeTimeouts[n] = setTimeout(function() { hideThenReplaceAMember(homeMembers,teamMember,member,sections,n); }, i*3000);
+                i++;
+            }
+        }
     }
-    return "";
 }
-/*                      */
+function hideThenReplaceAMember(homeMembers,teamMember,member,sections,n) {
+    sections[n].removeEventListener("click", setLink);
+    sections[n+1].removeEventListener("click", setLink);
+    sections[n].classList.add("hide-opacity");
+    sections[n+1].classList.add("hide-opacity");
+    homeTimeouts[n] = setTimeout(function() {
+        replaceAMember(homeMembers,teamMember,member,sections,n);
+    }, 1000);
+}
+function replaceAMember(homeMembers,teamMember,member,sections,n) {
+    sections[n].innerHTML = "<div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div>";
+    sections[n+1].innerHTML = "<div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div>";
+    let canvas = document.createElement("canvas");
+    let ctx = canvas.getContext('2d');
+    let avatar = new Image();
+    avatar.src = homeMembers[teamMember]["photoURL"];
+    avatar.addEventListener('load', function() {
+        if(homeMembers[teamMember]["gender"] == "male") {
+            ctx.drawImage(avatar, 100, 80, 700, 500, 0, 0, 350, 250);
+        } else {
+            ctx.drawImage(avatar, 100, 170, 700, 500, 0, 0, 350, 250);
+        }
+        let url = canvas.toDataURL();
+        document.getElementsByClassName("thumb_" + member)[0].style.backgroundImage = 'url(\'' + url + '\')';
+    }, false);
+    sections[n].addEventListener("click", setLink);
+    sections[n+1].addEventListener("click", setLink);
+    homeTimeouts[n] = setTimeout(function() {
+        sections[n].classList.remove("hide-opacity");
+        sections[n+1].classList.remove("hide-opacity");
+    }, 100);
+}
 
 /* main changing content after menu click */
 function loadContent(content) {
@@ -154,14 +185,18 @@ function loadContent(content) {
     main = document.querySelector("main");
     burgerButtonClick();
     clearMain();
+    if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
+    if (homeTimeout != undefined) { clearTimeout(homeTimeout); homeTimeout = undefined; }
+    if (homeTimeouts.length > 0) { homeTimeouts.forEach(t => clearTimeout(t)); homeTimeouts = []; }
 
     switch(content) {
         case "team":
+            main.classList.toggle("team-member", true);
             main.innerHTML += "<div><img src=\"assets/images/team.jpg\" alt=\"Photo de groupe.\"/><p></p></div>";
 
             for (let teamMember in teamData) {
-                main.innerHTML += "<section><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + teamData[teamMember]["name"] + ".\"/></div></section>";
-                main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + teamMember + "\">" + teamData[teamMember]["name"] + "</div></section>";
+                main.innerHTML += "<section class=\"team-member\"><div class=\"member-link thumb_" + teamMember + "\" data-member=\"" + teamMember + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + teamData[teamMember]["name"] + ".\"/></div></section>";
+                main.innerHTML += "<section class=\"team-member\"><div class=\"member-link link\" data-member=\"" + teamMember + "\">" + teamData[teamMember]["name"] + "</div></section>";
 
                 let canvas = document.createElement("canvas");
                 let ctx = canvas.getContext('2d');
@@ -180,6 +215,7 @@ function loadContent(content) {
             setTeamLinks();
             break;
         case "about":
+            main.classList.toggle("team-member", false);
             main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" alt=\"Publicité de la Wild Code School.\"/><p></p></div>";
             main.innerHTML += "<section><div>Développeur web et web mobile</div></section>";
             main.innerHTML += "<section><div>Actuellement en formation, notre équipe va devenir la meilleure équipe de développement web de l'entreprise.</div></section>";
@@ -199,7 +235,7 @@ function loadContent(content) {
                             zoom: 17
                         });
                         const image = "./assets/images/wild-icon.png";
-                        const beachMarker = new google.maps.Marker({
+                        const wildMarker = new google.maps.Marker({
                         position: { lat: 47.211332473444585, lng: -1.5475160636762386 }, 
                         map,
                         icon: image,
@@ -212,27 +248,29 @@ function loadContent(content) {
             }
             break;
         case "contact_us":
-            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\"/><p></p></div>";
+            main.classList.toggle("team-member", false);
+            main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\" /><p></p></div>";
             main.innerHTML += "<form name=\"contactus\" action=\"mailto:samy-lamiri_student2022@wilder.school\" method=\"get\" enctype=\"text/plain\"><section><div>Pour nous contacter:</div></section>";
             main.innerHTML += "<section><div>Remplissez le formulaire ci-dessous.</div></section>";
             main.innerHTML += "<section><div><label for=\"name\">Nom:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
+            main.innerHTML += "<section><div class=\"form\"><input type=\"text\" id=\"name\" name=\"name\" placeholder=\"John Doe\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"mail\">Mail:</label></div></section>";
-            main.innerHTML += "<section><div><input type=\"text\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
+            main.innerHTML += "<section><div class=\"form\"><input type=\"text\" id=\"mail\" name=\"mail\" placeholder=\"john.doe@mail.com\" /></div></section>";
             main.innerHTML += "<section><div><label for=\"message\">Message:</label></div></section>";
-            main.innerHTML += "<section><div><textarea name=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
+            main.innerHTML += "<section><div class=\"form textarea\"><textarea name=\"message\" id=\"message\" placeholder=\"Texte...\"></textarea></div></section>";
             main.innerHTML += "<section><div>Lorsque vous êtes prêt, cliquez sur <b>Envoyer</b>.</section>";
             main.innerHTML += "<section><div><button onclick=\"document.getElementsByName('contactus')[0].submit();\">Envoyer</button></section></form>";
             break;
         case "home":
         default:
-            main.innerHTML += "<div><img src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\"/><p></p></div>";
+            main.classList.toggle("team-member", true);
+            main.innerHTML += "<div><img class=\"petit-beurre\" src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\" /><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
                 for (let member in teamData) {
                     if (teamData[member]["name"] == homeMembers[teamMember]["name"]) {
-                        main.innerHTML += "<section><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
-                        main.innerHTML += "<section><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
+                        main.innerHTML += "<section class=\"team-member\"><div class=\"member-link thumb_" + member + "\" data-member=\"" + member + "\" id=\""+ homeMembers[teamMember]["name"].split(" ")[1] + "\"><img src=\"./assets/images/picture_border.png\" onmouseover=\"pictures_hover(this);\" onmouseout=\"pictures_unhover(this);\" alt=\"Photo de " + homeMembers[teamMember]["name"] + ".\"/></div></section>";
+                        main.innerHTML += "<section class=\"team-member\"><div class=\"member-link link\" data-member=\"" + member + "\">" + homeMembers[teamMember]["name"] + "</div></section>";
 
                         let canvas = document.createElement("canvas");
                         let ctx = canvas.getContext('2d');
@@ -251,18 +289,35 @@ function loadContent(content) {
                 }
             }
             setTeamLinks();
+            homeTimeout = setTimeout(function() {
+                pickMembers();
+                homeInterval = setInterval(pickMembers,22500);
+            }, 10000);
             break;
     }
 }
 
 /* preloading images */
-function imagePreloader(src) {
+function imagePreloader(href) {
     var img = document.createElement('link');
     img.rel = "preload";
     img.as = "image";
-    img.src = src;
+    img.href = href;
+    img.src = href;
     document.head.appendChild(img);
 }
+
+/* intercept android back button */
+document.addEventListener('backbutton', function(){
+    if(onPicture) {
+        backFromPicture();
+     return false;
+    }
+    else
+    {
+      navigator.app.exitApp();
+    }
+  });
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     /* load team members from json file */
@@ -272,7 +327,6 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     teamData.sort(compare);
 
     /* preload all images to avoid images loading when click on menu item */
-    imagePreloader("./assets/images/");
     imagePreloader("./assets/images/petit-lu.png");
     imagePreloader("./assets/images/team.jpg");
     imagePreloader("./assets/images/wild.jpg");
@@ -284,6 +338,8 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     /* used to set real body width into --var to help to set font-size */
     window.addEventListener("resize", setBodyWidthVar);
     setBodyWidthVar();
+
+    document.querySelector(".burger-button").addEventListener("click", burgerButtonClick);
 
     /* make menu click event */
     var menu_elements = document.querySelectorAll('nav ul li');
@@ -303,14 +359,15 @@ window.addEventListener("DOMContentLoaded", async (event) => {
         // Contactez nous
         loadContent("contact_us");
     });
+
     /* show burger menu before content loading */
     burgerButtonClick();
 
     /* load content */
     loadContent("home");
 
-    /* load cookie to reset light/dark mode following last visit of this client */
-    const lightMode = getCookie("lightMode");
+    /* load localstorage to reset light/dark mode following last visit of this client */
+    const lightMode = window.localStorage.getItem("lightMode");
     if (lightMode != undefined && lightMode != null) {
         darkMode(lightMode);
     }
