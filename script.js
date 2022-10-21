@@ -43,7 +43,7 @@ function compare( a, b ) {
 
 /* show/hide burger menu & burger button change */
 function burgerButtonClick() {
-    if (window.innerWidth < 700) {
+    if (window.innerWidth < 800) {
         let elem = document.querySelector("nav");
         let burgerButton = document.querySelector(".burger-button");
         if (elem.style.width == "150px") {
@@ -100,9 +100,9 @@ function backFromPicture() {
 function setLink(element) {
     if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
     if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
-    const member = element.target!=undefined ? element.target.dataset.member : element.dataset.member;
+    const member = element.dataset.member;
     clearMain();
-    main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo miniature de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
+    main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
     main.innerHTML += "<div class=\"details\"><h3>" + teamData[member]["name"] + "</h3><p>" + teamData[member]["description"] +"</p></div>";
     document.getElementById("arrowAnim").addEventListener("click", backFromPicture);
     onPicture = true;
@@ -147,8 +147,10 @@ function pickMembers() {
     }
 }
 function hideThenReplaceAMember(homeMembers,teamMember,member,sections,n) {
-    sections[n].removeEventListener("click", setLink);
-    sections[n+1].removeEventListener("click", setLink);
+    const link1 = sections[n].querySelector("div.member-link");
+    if (link1 != undefined) link1.removeEventListener("click", function() { setLink(this) });
+    const link2 = sections[n+1].querySelector("div.member-link");
+    if (link2 != undefined) link2.removeEventListener("click", function() { setLink(this) });
     sections[n].classList.add("hide-opacity");
     sections[n+1].classList.add("hide-opacity");
     homeTimeouts[n] = setTimeout(function() {
@@ -171,8 +173,8 @@ function replaceAMember(homeMembers,teamMember,member,sections,n) {
         let url = canvas.toDataURL();
         document.getElementsByClassName("thumb_" + member)[0].style.backgroundImage = 'url(\'' + url + '\')';
     }, false);
-    sections[n].addEventListener("click", setLink);
-    sections[n+1].addEventListener("click", setLink);
+    sections[n].querySelector("div.member-link").addEventListener("click", function() { setLink(this) });
+    sections[n+1].querySelector("div.member-link").addEventListener("click", function() { setLink(this) });
     homeTimeouts[n] = setTimeout(function() {
         sections[n].classList.remove("hide-opacity");
         sections[n+1].classList.remove("hide-opacity");
@@ -307,17 +309,15 @@ function imagePreloader(href) {
     document.head.appendChild(img);
 }
 
-/* intercept android back button */
-document.addEventListener('backbutton', function(){
+/* intercept back button from picture view */
+window.history.pushState(null, "", window.location.href);
+window.onpopstate = function () {
     if(onPicture) {
+        window.history.pushState(null, "", window.location.href);
         backFromPicture();
-     return false;
+        return;
     }
-    else
-    {
-      navigator.app.exitApp();
-    }
-  });
+};
 
 window.addEventListener("DOMContentLoaded", async (event) => {
     /* load team members from json file */
