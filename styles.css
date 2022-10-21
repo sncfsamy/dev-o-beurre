@@ -34,6 +34,7 @@ body {
     min-height: 100vh;
     max-width: 1200px;
     overflow-x: hidden;
+    --body-width: 1200px;
     --light-mode-text: rgba(0, 0, 0, 0.697);
     --light-mode-background: #d1d0d0;
     --dark-mode-text: rgba(255, 255, 255, 0.768);
@@ -46,7 +47,8 @@ body {
     --fourth-color: rgba(188, 4, 4, 0.5);
     --sixth-color: rgba(255, 255, 255, 0.768);
     --font-size-title: 20px;
-    --font-size-title: calc((40vw - 4.5rem) / 6);
+    --font-size-title: calc((25vw - 2.5rem) / 6);
+    font-family: "Libre-Baskerville-Regular";
     color: var(--active-text-color);
     background-color: var(--active-background-color);
     transition: .5s linear;
@@ -56,8 +58,6 @@ body {
     -o-transition: .5s linear;
     display: flex;
     flex-direction: column;
-    --body-width: 1200px;
-    font-family: "Libre-Baskerville-Regular";
 }
 
 header {
@@ -336,7 +336,7 @@ main form section,
 main > div {
     display: flex;
     justify-content: center;
-    align-items: center;
+    /*align-items: center;*/
     text-align: center;
     min-height: 80px;
 }
@@ -369,6 +369,10 @@ main div.details p {
 
 main section:nth-child(even) div[class*=" thumb_"] {
     margin: 0;
+}
+
+main section:nth-child(odd) div:not([class*=" thumb_"]) {
+    align-self: center;
 }
 
 main section:nth-child(even) div img {
@@ -487,7 +491,7 @@ footer span {
     top: 20%;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (min-width: 800px) {
     html {
         background-color: white;
     }
