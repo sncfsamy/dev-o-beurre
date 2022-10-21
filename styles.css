@@ -105,7 +105,7 @@ header > div:first-child {
     display: inline;
     vertical-align: middle;
     margin: 0;
-    font-size: clamp(24px, 2em, var(--font-size-title));
+    font-size: clamp(14px, 2em, var(--font-size-title));
     color:rgba(188, 4, 4, 0.5);
     background: linear-gradient(rgb(247, 0, 0), rgb(255, 0, 0));
     background-clip: text;
@@ -377,7 +377,7 @@ main.home > div {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-grow: 1;
+    flex-direction: column;
 }
 
 main.home > div img {
