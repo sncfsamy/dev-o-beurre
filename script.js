@@ -193,6 +193,7 @@ function loadContent(content) {
 
     switch(content) {
         case "team":
+            main.classList.toggle("home", false);
             main.classList.toggle("team-member", true);
             main.innerHTML += "<div><img src=\"assets/images/team.jpg\" alt=\"Photo de groupe.\"/><p></p></div>";
 
@@ -218,6 +219,7 @@ function loadContent(content) {
             break;
         case "about":
             main.classList.toggle("team-member", false);
+            main.classList.toggle("home", false);
             main.innerHTML += "<div><img src=\"assets/images/wild.jpg\" alt=\"Publicité de la Wild Code School.\"/><p></p></div>";
             main.innerHTML += "<section><div>Développeur web et web mobile</div></section>";
             main.innerHTML += "<section><div>Actuellement en formation, notre équipe va devenir la meilleure équipe de développement web de l'entreprise.</div></section>";
@@ -251,6 +253,7 @@ function loadContent(content) {
             break;
         case "contact_us":
             main.classList.toggle("team-member", false);
+            main.classList.toggle("home", false);
             main.innerHTML += "<div><img src=\"assets/images/contact-us.png\" alt=\"Nous contacter.\" /><p></p></div>";
             main.innerHTML += "<form name=\"contactus\" action=\"mailto:samy-lamiri_student2022@wilder.school\" method=\"get\" enctype=\"text/plain\"><section><div>Pour nous contacter:</div></section>";
             main.innerHTML += "<section><div>Remplissez le formulaire ci-dessous.</div></section>";
@@ -266,6 +269,7 @@ function loadContent(content) {
         case "home":
         default:
             main.classList.toggle("team-member", true);
+            main.classList.toggle("home", true);
             main.innerHTML += "<div><img class=\"petit-beurre\" src=\"assets/images/petit-lu.png\" alt=\"Logo des Dev-o-Beurre.\" /><p></p></div>";
             let homeMembers = randomMembers(teamData);
             for (let teamMember in homeMembers) {
