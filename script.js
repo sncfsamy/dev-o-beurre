@@ -99,7 +99,7 @@ function backFromPicture() {
 /* make pictures and name links on home and team page */
 function setLink(element) {
     if (homeInterval != undefined) { clearInterval(homeInterval); homeInterval = undefined; }
-    if (homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
+    if (homeTimeout != undefined && homeTimeout.length > 0) { homeTimeout.forEach(t => clearTimeout(t)); homeTimeout = []; }
     const member = element.dataset.member;
     clearMain();
     main.innerHTML = "<div><img src=\"" + teamData[member]["photoURL"] + "\" alt=\"Photo de " + teamData[member]["name"] + ".\" />" + arrow_back + "</div>";
