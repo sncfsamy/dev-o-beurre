@@ -72,7 +72,7 @@ function darkMode(mode) {
     let moon = document.querySelector('.moon');
     let brightness = document.querySelector('.brightness');
     let styles = getComputedStyle(body);
-    if (mode == "light" || styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text')) {
+    if (mode == "light" || (mode == undefined && styles.getPropertyValue('--active-text-color') != styles.getPropertyValue('--light-mode-text'))) {
         window.localStorage.setItem("lightMode", "light");
         brightness.classList.add("hide");
         moon.classList.remove("hide");
@@ -373,6 +373,7 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     /* load localstorage to reset light/dark mode following last visit of this client */
     const lightMode = window.localStorage.getItem("lightMode");
     if (lightMode != undefined && lightMode != null) {
+        console.log(lightMode);
         darkMode(lightMode);
     }
 });
