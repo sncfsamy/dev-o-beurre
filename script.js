@@ -60,7 +60,7 @@ function burgerButtonClick() {
 
 /* empty main */
 function clearMain() {
-    [].forEach.call(document.querySelectorAll("main *"), function(x) {
+    document.querySelectorAll("main *").forEach(function(x) {
         x.remove();
     });
 }
@@ -338,6 +338,8 @@ window.addEventListener("DOMContentLoaded", async (event) => {
     imagePreloader("./assets/images/picture_border.png");
     imagePreloader("./assets/images/picture_border_hover.png");
     teamData.forEach((member) => { imagePreloader(member["photoURL"]) });
+
+    document.querySelector("header div").addEventListener("click", () => darkMode());
 
     /* used to set real body width into --var to help to set font-size */
     window.addEventListener("resize", setBodyWidthVar);

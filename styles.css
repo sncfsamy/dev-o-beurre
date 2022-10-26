@@ -110,7 +110,9 @@ header > div:first-child {
     background: linear-gradient(rgb(247, 0, 0), rgb(255, 0, 0));
     background-clip: text;
     -webkit-background-clip: text;
+    -moz-background-clip: text;
     -ms-background-clip: text;
+    -o-background-clip: text;
     color: transparent;
     text-shadow: calc(var(--font-size-title)/8) calc(var(--font-size-title)/8) calc(var(--font-size-title)/8) rgba(0, 0, 0, 0.5);
     line-height: 120%;
